@@ -74,7 +74,7 @@ services:
 
   mediamtx:
     image: bluenviron/mediamtx:latest
-    container_name: overlord-mediamtx
+    container_name: overlord-mediamtx-mod
     restart: unless-stopped
     ports:
       # WHIP/WHEP signaling only reached by the Bun container internally,

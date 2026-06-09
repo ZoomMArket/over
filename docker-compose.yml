@@ -79,7 +79,7 @@ services:
 
   mediamtx:
     image: bluenviron/mediamtx:latest
-    container_name: overlord-mediamtx
+    container_name: overlord-mediamtx-mod
     # Share the host network so WebRTC ICE candidates use the host's real
     # interfaces directly — no extra config needed for local or LAN browsers.
     network_mode: host
