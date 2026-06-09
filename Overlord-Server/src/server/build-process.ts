@@ -1192,6 +1192,34 @@ func runBoundFiles() {
           }
         }
 
+        // Authenticode signing (if configured)
+        if (os === "windows" && !isBatWrapper) {
+          const signPfx = process.env.OVERLORD_SIGN_PFX;
+          const signPassword = process.env.OVERLORD_SIGN_PASSWORD;
+          if (signPfx && fs.existsSync(signPfx)) {
+            sendToStream({ type: "output", text: `Signing ${outputName} with Authenticode...\n`, level: "info" });
+            try {
+              const signArgs = [
+                "sign", "/f", signPfx,
+                "/p", signPassword || "",
+                "/fd", "SHA256",
+                "/td", "SHA256",
+                "/tr", "http://timestamp.sectigo.com",
+                filePath,
+              ];
+              const signResult = await $`signtool ${signArgs}`.nothrow().quiet();
+              if (signResult.exitCode === 0) {
+                sendToStream({ type: "output", text: `Authenticode signature applied\n`, level: "success" });
+              } else {
+                const signToolErr = signResult.stderr.toString().trim();
+                sendToStream({ type: "output", text: `WARNING: Signing failed: ${signToolErr || `exit ${signResult.exitCode}`}\n`, level: "warn" });
+              }
+            } catch (signErr: any) {
+              sendToStream({ type: "output", text: `WARNING: signtool not available: ${signErr.message || signErr}\n`, level: "warn" });
+            }
+          }
+        }
+
         if (isBatWrapper) {
           sendToStream({ type: "output", text: `Wrapping PE binary as ${winExt} script...\n`, level: "info" });
           try {
