@@ -43,6 +43,7 @@ export async function customPack(
     fs.writeFileSync(path.join(workDir, "go.mod"), goModContent);
 
     const env: Record<string, string> = {
+      ...process.env as Record<string, string>,
       GOOS: goos,
       GOARCH: goarch,
       CGO_ENABLED: "0",
