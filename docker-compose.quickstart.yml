@@ -1,6 +1,6 @@
 services:
   overlord-server:
-    image: ghcr.io/vxaboveground/overlord:latest
+    image: overlord-mod:latest
     build:
       context: .
       dockerfile: Dockerfile
@@ -8,7 +8,7 @@ services:
         - type=local,src=.docker-cache/buildx
       cache_to:
         - type=local,dest=.docker-cache/buildx,mode=max
-    container_name: overlord-server
+    container_name: overlord-server-mod
     # Host networking: the container shares the host's network stack directly.
     # Every port the server binds (5173, SOCKS5 proxies, etc.) is accessible
     # on the host with zero overhead — no per-port proxy process.
@@ -21,7 +21,7 @@ services:
       - JWT_SECRET=
       - OVERLORD_AGENT_TOKEN=
       # Server settings
-      - PORT=5173
+      - PORT=5174
       - HOST=0.0.0.0
       # TLS paths (self-signed is auto-generated if not present)
       - OVERLORD_TLS_CERT=/app/certs/server.crt
@@ -61,7 +61,7 @@ services:
     restart: unless-stopped
     healthcheck:
       # Use http:// when OVERLORD_TLS_OFFLOAD=true.
-      test: ["CMD-SHELL", "wget -qO- --no-check-certificate ${OVERLORD_HEALTHCHECK_URL:-https://localhost:5173/health} >/dev/null 2>&1 || exit 1"]
+      test: ["CMD-SHELL", "wget -qO- --no-check-certificate ${OVERLORD_HEALTHCHECK_URL:-https://localhost:5174/health} >/dev/null 2>&1 || exit 1"]
       interval: 30s
       timeout: 10s
       retries: 3

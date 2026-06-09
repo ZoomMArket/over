@@ -1,6 +1,6 @@
 services:
   overlord-server:
-    image: ${DOCKER_IMAGE:-ghcr.io/vxaboveground/overlord:latest}
+    image: ${DOCKER_IMAGE:-overlord-mod:latest}
     build:
       context: .
       dockerfile: Dockerfile
@@ -8,11 +8,11 @@ services:
         - type=local,src=.docker-cache/buildx
       cache_to:
         - type=local,dest=.docker-cache/buildx,mode=max
-    container_name: overlord-server
+    container_name: overlord-server-mod
     ports:
-      - "${PORT:-5173}:5173"
+      - "${PORT:-5174}:5174"
     environment:
-      PORT: 5173
+      PORT: 5174
       HOST: 0.0.0.0
       # Optional: set an explicit initial admin account. If OVERLORD_PASS is empty,
       # the server generates one-time bootstrap secrets and stores them in /app/data/save.json.
@@ -66,7 +66,7 @@ services:
       - no-new-privileges:true
     healthcheck:
       # Use http:// when OVERLORD_TLS_OFFLOAD=true.
-      test: ["CMD-SHELL", "wget -qO- --no-check-certificate ${OVERLORD_HEALTHCHECK_URL:-https://localhost:5173/health} >/dev/null 2>&1 || exit 1"]
+      test: ["CMD-SHELL", "wget -qO- --no-check-certificate ${OVERLORD_HEALTHCHECK_URL:-https://localhost:5174/health} >/dev/null 2>&1 || exit 1"]
       interval: 30s
       timeout: 10s
       retries: 3
